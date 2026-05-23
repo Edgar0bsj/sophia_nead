@@ -3,8 +3,8 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database.base import Base
 
-class Aluno(Base):
-    __tablename__ = "alunos"
+class Polo(Base):
+    __tablename__ = "polo"
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -13,9 +13,5 @@ class Aluno(Base):
     )
 
     nome: Mapped[str] = mapped_column(
-        String(100)
-    )
-
-    cargo: Mapped[str] = mapped_column(
         String(100)
     )
