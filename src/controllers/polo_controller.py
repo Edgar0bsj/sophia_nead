@@ -6,8 +6,7 @@ class PoloController:
         self.service = PoloService()
         
         
-        
-        
+
     def create_polo(self, polo:PoloInput):
         return self.service.create_case(polo.nome)
     
