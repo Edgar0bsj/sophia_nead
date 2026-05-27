@@ -22,6 +22,7 @@ class HomePage(QtWidgets.QMainWindow):
         
         # EVENTOS
         # BTNS
+        self.ui.btnSalvar.setEnabled(False)
         self.ui.btnSelecionarArquivo.clicked.connect(self.selecionar_arquivo)
         self.ui.btnAnalisar.clicked.connect(self._analisar_evento)
         self.ui.btnSalvar.clicked.connect(self._salvar_evento)
@@ -37,6 +38,7 @@ class HomePage(QtWidgets.QMainWindow):
         
     def _analisar_evento(self):
         print("BTN ANALISAR FUNCIONANDO")
+        self.ui.btnSalvar.setEnabled(True)
         
     def _salvar_evento(self):
         print("BTN SALVAR FUNCIONANDO")
@@ -109,15 +111,10 @@ class HomePage(QtWidgets.QMainWindow):
             self.ui.inputArquivo.setText(caminho_arquivo)
 
             # log
-            self.ui.logArea.appendPlainText(
-                f"Arquivo selecionado: {caminho_arquivo}"
-            )
+            self.set_log(f"Arquivo selecionado: {caminho_arquivo}")
 
             self._dataPath = caminho_arquivo
             print(self._dataPath)
         
-app = QtWidgets.QApplication(sys.argv)
-janela = HomePage()
-janela.show()
-sys.exit(app.exec())
-    
+    def set_log(self, text):
+        self.ui.logArea.appendPlainText(text)
