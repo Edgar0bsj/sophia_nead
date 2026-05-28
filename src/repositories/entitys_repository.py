@@ -92,7 +92,6 @@ class EntityRepository(EntityRepositoryInterface[EntitysModel]):
         
         
         if not entityOutput: return False
-        
         self.session.delete(entityOutput)
         self.session.commit()
         

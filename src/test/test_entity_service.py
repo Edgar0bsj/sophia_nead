@@ -1,12 +1,17 @@
 from src.containers.entity_container import entityContainer
 from src.dto.entityDTO import EntityDTO
 from src.models.entitys_model import EntitysModel
-from typing import List
 
 class TestEntityService:
 
     def setup_method(self):
         self.controller = entityContainer()
+        self.entitysTeste = []
+    
+    def teardown_method(self):
+        if len(self.entitysTeste) > 0:
+            for i in range(len(self.entitysTeste)):
+                self.controller.remove_entity(self.entitysTeste[i].id)
 
     def test_create_entity(self):
 
@@ -21,10 +26,10 @@ class TestEntityService:
         result = self.controller.create_entity(entity_campus)
 
         assert isinstance(result, EntitysModel)
-
         assert result.id is not None
-
         assert result.entity_name == "campus"
+        self.entitysTeste.append(result)
+        
 
     def test_find_all_entity(self):
         
@@ -51,3 +56,59 @@ class TestEntityService:
         
         assert isinstance(result, EntitysModel)
         assert created.id == result.id
+        assert created.sistema == result.sistema
+        assert created.unidade == result.unidade
+        assert created.entity_name == result.entity_name
+        assert created.oldExternalId == result.oldExternalId
+        assert created.newExternalId == result.newExternalId
+        self.entitysTeste.append(created)
+        
+    def test_update_entity(self):
+        
+        entity_campus = EntityDTO(
+            sistema="SOPHIA",
+            unidade="UNIG",
+            entity_name="campus",
+            oldExternalId="741852963",
+            newExternalId="369258147"
+        )
+        
+        created = self.controller.create_entity(entity_campus)
+        
+        created.sistema = "LXP"
+        created.unidade = "ITAPERUNAT"
+        created.entity_name = "polo"
+        created.oldExternalId = "852147963"
+        created.newExternalId = "963852741"
+        
+        update = self.controller.update_entity(created)
+        
+        result = self.controller.find_by_id_entity(created.id)
+        
+        assert isinstance(result, EntitysModel)
+        assert update.id == created.id
+        assert update.sistema == created.sistema
+        assert update.unidade == created.unidade
+        assert update.entity_name == created.entity_name
+        assert update.oldExternalId == created.oldExternalId
+        assert update.newExternalId == created.newExternalId
+        self.entitysTeste.append(created)
+        
+    def test_delete_entity(self):
+        entity_campus = EntityDTO(
+            sistema="TESTE",
+            unidade="UNIG",
+            entity_name="campus",
+            oldExternalId="741852963",
+            newExternalId="369258147"
+        )
+        
+        created = self.controller.create_entity(entity_campus)
+        
+        entity_dell = self.controller.remove_entity(created.id)
+
+        assert isinstance(entity_dell, EntitysModel)
+        assert len(self.entitysTeste) == 0
+        self.entitysTeste.append(created)
+        
+

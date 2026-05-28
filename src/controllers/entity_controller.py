@@ -9,7 +9,7 @@ class EntityController:
         )-> None:
         self.service = service
         
-    def create_entity(self, entity_dto:EntityDTO):
+    def create_entity(self, entity_dto:EntityDTO)-> EntitysModel:
         try:
             entity = EntitysModel(
                 sistema= entity_dto.sistema,
@@ -26,6 +26,27 @@ class EntityController:
     def find_all_entity(self)-> list[EntitysModel]:
         try:
             return (self.service.find_all_entity())
+        except Exception as err:
+            print(err)
+            raise
+        
+    def find_by_id_entity(self, id:int):
+        try:
+            return (self.service.find_by_id_entity(id))
+        except Exception as err:
+            print(err)
+            raise
+        
+    def update_entity(self, entityModel:EntitysModel)-> EntitysModel:
+        try:
+            return (self.service.update_entity(entityModel))
+        except Exception as err:
+            print(err)
+            raise
+    
+    def remove_entity(self, id:int):
+        try:
+            return (self.service.delete_entity(id))
         except Exception as err:
             print(err)
             raise
