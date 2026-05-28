@@ -1,12 +1,17 @@
-from src.database.connection import SessionLocal
+from sqlalchemy.orm import Session
+
+from src.interface.entityInterface.entity_repository_interface import EntityRepositoryInterface
 from src.models.entitys_model import EntitysModel
-from src.schemas.entitys_schema import EntitysInput
 from datetime import date
 
-class EntityRepository:
+class EntityRepository(EntityRepositoryInterface[EntitysModel]):
 
-    def __init__(self):
-        self.session = SessionLocal()
+    def __init__(
+        self,
+        session:Session
+        )-> None:
+        
+        self.session = session
         
     # ///////////////////////////////////////////////
     #               find_all
@@ -32,7 +37,7 @@ class EntityRepository:
     # ///////////////////////////////////////////////
     #                   create
     # ///////////////////////////////////////////////
-    def create(self, entityInput:EntitysInput)-> EntitysInput:
+    def save(self, entityInput:EntitysModel)-> EntitysModel:
 
         entityOutput = EntitysModel(
             sistema=entityInput.sistema,
@@ -50,7 +55,7 @@ class EntityRepository:
     # ///////////////////////////////////////////////
     #                   update
     # ///////////////////////////////////////////////
-    def update(self, entityInput:EntitysInput)-> EntitysInput:
+    def update(self, entityInput:EntitysModel)-> EntitysModel:
         entityOutput = (
             self.session
             .query(EntitysModel)

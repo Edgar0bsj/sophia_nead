@@ -1,9 +1,8 @@
 from sqlalchemy import Date, String, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import date
+from src.database.database_connection import Base
 
-
-from src.database.base import Base
 
 class EntitysModel(Base):
     __tablename__ = "entitys_model"
@@ -16,9 +15,9 @@ class EntitysModel(Base):
 
     data: Mapped[date] = mapped_column(Date, default=date.today)
     
-    sistema: Mapped[date] = mapped_column(String(100))
+    sistema: Mapped[str] = mapped_column(String(100))
     
-    unidade: Mapped[date] = mapped_column(String(100))
+    unidade: Mapped[str] = mapped_column(String(100))
     
     entity_name: Mapped[str] = mapped_column(String(100))
     

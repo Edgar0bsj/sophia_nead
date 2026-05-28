@@ -1,22 +1,23 @@
-from src.adapter.entity.repository_base import RepositoryBase
-from src.schemas.entitys_schema import EntitysInput
+from src.interface.entityInterface.entity_service_interface import EntityServiceInterface
+from src.models.entitys_model import EntitysModel
+from src.interface.entityInterface.entity_repository_interface import EntityRepositoryInterface
 
-class EntityService:
+class EntityService(EntityServiceInterface[EntitysModel]):
     
-    def __init__(self, entityRepository:RepositoryBase):
+    def __init__(self, entityRepository:EntityRepositoryInterface):
         self.repository = entityRepository
             
-    def find_by_id_entity(self, id:int):
+    def find_by_id_entity(self, id:int)-> EntitysModel:
         return (self.repository.find_by_id(id))
     
-    def find_all_entity(self):
+    def find_all_entity(self)-> list[EntitysModel]:
         return (self.repository.find_all())
     
-    def create_entity(self, entitysInput:EntitysInput):
-        return (self.repository.create(entitysInput))
+    def save_entity(self, entitysInput:EntitysModel)-> EntitysModel:
+        return (self.repository.save(entitysInput))
     
-    def update_entity(self, entitysInput:EntitysInput):
+    def update_entity(self, entitysInput:EntitysModel)-> EntitysModel:
         return (self.repository.update(entitysInput))
     
-    def delete_entity(self, id:int):
+    def delete_entity(self, id:int)-> EntitysModel:
         return (self.repository.delete(id))

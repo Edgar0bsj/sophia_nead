@@ -1,30 +1,13 @@
-from abc import ABC, abstractmethod
+from typing import TypeVar
 
-class MultiplicarBase(ABC):
-    
-    @abstractmethod
-    def exec(self, x:int, y:int): pass
-    
+# 1. Declara a variável de tipo
+T = TypeVar("T")
 
-class Multiplicar(MultiplicarBase):
-    
-    def exec(self, x, y):
-        return (x*y)
-    
-class LogDecorator(MultiplicarBase):
-    def __init__(self, box:MultiplicarBase):
-        self.box = box
-    
-    def exec(self, x, y):
-        
-        print("CATAPIMBAS")
-        
-        return self.box.exec(x,y)
-    
-    
-# //////////////////////////////
-calc = Multiplicar()
-# calc = LogDecorator(calc)
-# print(calc.exec(5,4))
 
-assert calc.exec(5,4) == 21
+# 2. Usa na função (sem os colchetes no nome da função)
+def primeiro_elemento_antigo(lista: list[T]) -> T:
+    return lista[0]
+
+
+result = primeiro_elemento_antigo(["2"])
+print(type(result))
