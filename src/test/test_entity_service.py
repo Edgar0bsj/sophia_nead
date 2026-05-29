@@ -30,6 +30,7 @@ class TestEntityService:
         assert result.entity_name == "campus"
         self.entitysTeste.append(result)
         
+        
 
     def test_find_all_entity(self):
         
@@ -111,4 +112,33 @@ class TestEntityService:
         assert len(self.entitysTeste) == 0
         self.entitysTeste.append(created)
         
+    def test_update_insert_entity(self):
+        entity_1 = EntityDTO(
+            sistema="TESTE",
+            unidade="TESTEE",
+            entity_name="campusS",
+            oldExternalId="123456789",
+            newExternalId="987654321"
+        )
+        
+        created_entity_1 =self.controller.create_entity(entity_1)
+        
+        entity_2 = EntityDTO(
+            sistema="TESTE",
+            unidade="TESTEE",
+            entity_name="campusS",
+            oldExternalId="999999999",
+            newExternalId="888888888"
+        )
+        
+        created_entity_2 = self.controller.create_entity(entity_2)
 
+        entity_1_output = self.controller.find_by_id_entity(created_entity_1.id)
+        entity_2_output = self.controller.find_by_id_entity(created_entity_2.id)
+        
+        assert isinstance(entity_1_output, EntitysModel)
+        assert isinstance(entity_2_output, EntitysModel)
+        assert entity_1_output.id == entity_2_output.id
+        
+
+            

@@ -2,6 +2,8 @@ from src.interface.entityInterface.entity_service_interface import EntityService
 from src.models.entitys_model import EntitysModel
 from src.interface.entityInterface.entity_repository_interface import EntityRepositoryInterface
 
+from src.decorators.entityDecorators.service.upsert_decorator import UpsertDecorator
+
 class EntityService(EntityServiceInterface[EntitysModel]):
     
     def __init__(self, entityRepository:EntityRepositoryInterface):
@@ -13,6 +15,7 @@ class EntityService(EntityServiceInterface[EntitysModel]):
     def find_all_entity(self)-> list[EntitysModel]:
         return (self.repository.find_all())
     
+    @UpsertDecorator
     def save_entity(self, entitysInput:EntitysModel)-> EntitysModel:
         return (self.repository.save(entitysInput))
     
