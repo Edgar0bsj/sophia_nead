@@ -61,12 +61,14 @@ class TestNivelDeEnsinoRepository:
         assert resultUpdate.educationLevelTypeId == resultCreate.educationLevelTypeId
 
     def test_find_all(self, repository: NivelDeEnsinoRepository):
-        modalidadeAll = repository.find_all()
+        nivelDeEnsinoAll = repository.find_all()
 
-        assert modalidadeAll is not None
-        assert isinstance(modalidadeAll, list)
-        for i in modalidadeAll:
-            assert isinstance(i, NivelDeEnsinoRepository)
+        assert nivelDeEnsinoAll is not None
+        assert isinstance(nivelDeEnsinoAll, list)
+
+        if len(nivelDeEnsinoAll) > 0:
+            for i in nivelDeEnsinoAll:
+                assert isinstance(i, NivelDeEnsinoModel)
 
     def test_find_by_id(
         self,
