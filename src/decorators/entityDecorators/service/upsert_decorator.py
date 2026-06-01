@@ -1,28 +1,29 @@
 from functools import wraps
-from src.dto.entityDTO import EntityDTO
+from src.models.entitys_model import EntitysModel
 from datetime import date
-from src.interface.entityInterface.entity_service_interface import EntityServiceInterface
+from src.interface.service_interface import ServiceInterface
+
 
 def UpsertDecorator(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
 
-        dto: EntityDTO = args[1]
+        dto: EntitysModel = args[1]
 
-        service:EntityServiceInterface = args[0]
+        service: ServiceInterface = args[0]
 
         data_atual = date.today()
 
-        entity_all = service.find_all_entity()
+        entity_all = service.find_all()
 
         for entity in entity_all:
 
             same_entity = (
-                dto.entity_name == entity.entity_name and
-                dto.unidade == entity.unidade and
-                dto.sistema == entity.sistema and
-                data_atual == entity.data
+                dto.entity_name == entity.entity_name
+                and dto.unidade == entity.unidade
+                and dto.sistema == entity.sistema
+                and data_atual == entity.data
             )
 
             if not same_entity:
@@ -31,7 +32,7 @@ def UpsertDecorator(func):
             entity.oldExternalId = dto.oldExternalId
             entity.newExternalId = dto.newExternalId
 
-            return service.update_entity(entity)
+            return service.update(entity)
 
         return func(*args, **kwargs)
 

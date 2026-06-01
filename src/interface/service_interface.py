@@ -1,35 +1,35 @@
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic
+from typing import TypeVar, Generic, Optional
 
 T = TypeVar("T")
 
-class EntityServiceInterface(ABC, Generic[T]):
+class ServiceInterface(ABC, Generic[T]):
     
     @abstractmethod
-    def save_entity(
+    def save(
         self,
         entity: T
     )-> T: ...
     
     @abstractmethod
-    def update_entity(
+    def update(
         self,
         entity: T
     )-> T: ...
     
     @abstractmethod
-    def find_all_entity(
+    def find_all(
         self
     )-> list[T]: ...
     
     @abstractmethod
-    def find_by_id_entity(
+    def find_by_id(
         self,
         id:int
-    )-> T: ...
+    )-> Optional[T]: ...
     
     @abstractmethod
-    def delete_entity(
+    def delete(
         self,
         id:int
-    )-> T: ...
+    )-> Optional[T]: ...

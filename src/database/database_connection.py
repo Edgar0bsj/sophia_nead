@@ -7,19 +7,20 @@ from sqlalchemy.orm import DeclarativeBase
 class Base(DeclarativeBase):
     pass
 
+
 class DatabaseConnection(DataBaseInterface[Session]):
     def __init__(self):
         self.base = Base
-        
+
     def bootstrap(
         self,
-        endatabase_url = 'sqlite:///src/database/database.db',
-        )-> Session:
-            
+        endatabase_url="sqlite:///src/database/database.db",
+    ) -> Session:
+
         engine = create_engine(endatabase_url)
-        
+
         session = sessionmaker(bind=engine)
-        
+
         self.base.metadata.create_all(engine)
-        
+
         return session

@@ -1,26 +1,26 @@
-from src.interface.entityInterface.entity_service_interface import EntityServiceInterface
+from src.interface.service_interface import ServiceInterface
 from src.models.entitys_model import EntitysModel
-from src.interface.entityInterface.entity_repository_interface import EntityRepositoryInterface
+from src.interface.repository_interface import RepositoryInterface
 
 from src.decorators.entityDecorators.service.upsert_decorator import UpsertDecorator
 
-class EntityService(EntityServiceInterface[EntitysModel]):
+class EntityService(ServiceInterface[EntitysModel]):
     
-    def __init__(self, entityRepository:EntityRepositoryInterface):
+    def __init__(self, entityRepository:RepositoryInterface):
         self.repository = entityRepository
             
-    def find_by_id_entity(self, id:int)-> EntitysModel:
+    def find_by_id(self, id:int)-> EntitysModel:
         return (self.repository.find_by_id(id))
     
-    def find_all_entity(self)-> list[EntitysModel]:
+    def find_all(self)-> list[EntitysModel]:
         return (self.repository.find_all())
     
     @UpsertDecorator
-    def save_entity(self, entitysInput:EntitysModel)-> EntitysModel:
+    def save(self, entitysInput:EntitysModel)-> EntitysModel:
         return (self.repository.save(entitysInput))
     
-    def update_entity(self, entitysInput:EntitysModel)-> EntitysModel:
+    def update(self, entitysInput:EntitysModel)-> EntitysModel:
         return (self.repository.update(entitysInput))
     
-    def delete_entity(self, id:int)-> EntitysModel:
+    def delete(self, id:int)-> EntitysModel:
         return (self.repository.delete(id))

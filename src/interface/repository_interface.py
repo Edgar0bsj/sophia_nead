@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Generic, TypeVar, Optional
 
 T = TypeVar("T")
 
-class EntityRepositoryInterface(ABC, Generic[T]):
+class RepositoryInterface(ABC, Generic[T]):
     
     @abstractmethod
     def save(
@@ -15,7 +15,7 @@ class EntityRepositoryInterface(ABC, Generic[T]):
     def find_by_id(
         self,
         id:int
-    )-> T: ...
+    )-> Optional[T]: ...
     
     @abstractmethod
     def find_all(
@@ -32,4 +32,4 @@ class EntityRepositoryInterface(ABC, Generic[T]):
     def delete(
         self,
         id: int
-    )-> T: ...
+    )-> Optional[T]: ...

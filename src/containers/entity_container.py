@@ -14,4 +14,3 @@ def entityContainer():
     controller = EntityController(service)
     
     return controller
-    

@@ -4,8 +4,8 @@ from datetime import date
 from src.database.database_connection import Base
 
 
-class EntitysModel(Base):
-    __tablename__ = "entitys"
+class ModalidadeModel(Base):
+    __tablename__ = "modalidade"
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -19,8 +19,8 @@ class EntitysModel(Base):
     
     unidade: Mapped[str] = mapped_column(String(100))
     
-    entity_name: Mapped[str] = mapped_column(String(100))
+    modalidade_nome: Mapped[str] = mapped_column(String(100))
     
-    oldExternalId: Mapped[str] = mapped_column(String(100))
+    externalId: Mapped[str] = mapped_column(String(100))
     
-    newExternalId: Mapped[str] = mapped_column(String(100))
+    teachingModalityTypeId: Mapped[str] = mapped_column(String(100))
