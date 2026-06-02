@@ -7,7 +7,7 @@ from src.repositories.cursos_repository import CursosRepository
 
 @pytest.fixture
 def repository():
-    session = DatabaseConnection().bootstrap()
+    session = DatabaseConnection().bootstrap("sqlite:///:memory:")
     repository = CursosRepository(session())
     return repository
 
