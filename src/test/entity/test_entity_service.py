@@ -1,8 +1,9 @@
+from datetime import date
+
 import pytest
 
-from src.models.entitys_model import EntitysModel
 from src.database.database_connection import DatabaseConnection
-
+from src.dto.entityDTO import EntityInputDTO, EntityEnum
 from src.services.entity_service import EntityService
 from src.repositories.entitys_repository import EntityRepository
 
@@ -17,11 +18,11 @@ def service():
 
 
 @pytest.fixture
-def entity_model():
-    return EntitysModel(
+def entityInput_DTO():
+    return EntityInputDTO(
         sistema="SOPHIA",
         unidade="UNIG",
-        entity_name="Campus",
+        entity=EntityEnum.MATRICULAS,
         oldExternalId="123456789",
         newExternalId="987654321",
     )
@@ -29,89 +30,64 @@ def entity_model():
 
 class TestEntityService:
 
-    def test_save(
-        self, service: EntityService, entity_model: EntitysModel
-    ) -> EntitysModel:
-        result = service.save(entity_model)
+    def test_create_entity(
+        self, service: EntityService, entityInput_DTO: EntityInputDTO
+    ):
 
-        assert result.newExternalId == entity_model.newExternalId
-        assert result is not None
-        assert isinstance(result, EntitysModel)
-
-    def test_update(
-        self, service: EntityService, entity_model: EntitysModel
-    ) -> EntitysModel:
-        entityCreated = service.save(entity_model)
-
-        entityCreated.sistema = "AVALIA"
-        entityCreated.unidade = "ITAPERUNA"
-        entityCreated.entity_name = "polo"
-        entityCreated.oldExternalId = "1112223344"
-        entityCreated.newExternalId = "6655443322"
-
-        result = service.update(entityCreated)
-
-        assert result.id == entityCreated.id
-        assert result is not None
-        assert isinstance(result, EntitysModel)
-
-    def test_find_by_id(
-        self, service: EntityService, entity_model: EntitysModel
-    ) -> EntitysModel:
-        created = service.save(entity_model)
-
-        findResult = service.find_by_id(created.id)
-
-        assert findResult is not None
-        assert isinstance(findResult, EntitysModel)
-        assert findResult.id == created.id
-
-    def test_find_all(self, service: EntityService):
-        result = service.find_all()
+        result = service.create_entity(entityInput_DTO)
 
         assert result is not None
-        assert isinstance(result, list)
-        if len(result) > 0:
-            for i in result:
-                assert isinstance(i, EntitysModel)
+        assert result
 
-    def test_delete(
-        self, service: EntityService, entity_model: EntitysModel
-    ) -> EntitysModel:
-        created = service.save(entity_model)
+    def test_update_entity(
+        self, service: EntityService, entityInput_DTO: EntityInputDTO
+    ):
+        created = service.create_entity(entityInput_DTO)
 
-        result = service.delete(created.id)
-
-        deveSerNone = service.find_by_id(created.id)
-
-        assert result is not None
-        assert isinstance(result, EntitysModel)
-        assert deveSerNone is None
-
-    def test_update_insert_entity(self, service: EntityService):
-        entity_1 = EntitysModel(
-            sistema="TESTE",
-            unidade="TESTEE",
-            entity_name="campusS",
-            oldExternalId="123456789",
-            newExternalId="987654321",
+        editEntity = EntityInputDTO(
+            sistema="SOPHIA",
+            unidade="ITAPERUNA",
+            entity=EntityEnum.PESSOAS,
+            oldExternalId="123",
+            newExternalId="321",
         )
 
-        created_entity_1 = service.save(entity_1)
+        result = service.update_entity(id=1, entityInput=editEntity)
 
-        entity_2 = EntitysModel(
-            sistema="TESTE",
-            unidade="TESTEE",
-            entity_name="campusS",
-            oldExternalId="999999999",
-            newExternalId="888888888",
-        )
+        assert result is not None
+        assert result
 
-        created_entity_2 = service.save(entity_2)
+    def test_find_all_entity(
+        self, service: EntityService, entityInput_DTO: EntityInputDTO
+    ):
 
-        entity_1_output = service.find_by_id(created_entity_1.id)
-        entity_2_output = service.find_by_id(created_entity_2.id)
+        created = service.create_entity(entityInput_DTO)
+        result = service.find_all_entity()
 
-        assert isinstance(entity_1_output, EntitysModel)
-        assert isinstance(entity_2_output, EntitysModel)
-        assert entity_1_output.id == entity_2_output.id
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].entity_name == entityInput_DTO.entity.value
+        assert created is True
+
+    def test_find(self, service: EntityService, entityInput_DTO: EntityInputDTO):
+
+        created = service.create_entity(entityInput_DTO)
+        result = service.find_entity(date.today(), None, None)
+
+        assert result is not None
+        assert len(result) == 1
+        assert result[0].entity_name == entityInput_DTO.entity.value
+        assert created is True
+
+    def test_delete_entity(
+        self, service: EntityService, entityInput_DTO: EntityInputDTO
+    ):
+
+        created = service.create_entity(entityInput_DTO)
+        result = service.find_entity(date.today(), None, None)
+
+        resultDelet = service.delete_entity(result[0].id)
+
+        assert resultDelet is not None
+        assert len(result) >= 1
+        assert resultDelet is True

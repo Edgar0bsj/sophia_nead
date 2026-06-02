@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 
-from src.interface.repository_interface import RepositoryInterface
 from src.models.entitys_model import EntitysModel
 from datetime import date
 
 
-class EntityRepository(RepositoryInterface[EntitysModel]):
+class EntityRepository:
 
     def __init__(self, session: Session) -> None:
 
@@ -48,11 +48,9 @@ class EntityRepository(RepositoryInterface[EntitysModel]):
     # ///////////////////////////////////////////////
     #                   update
     # ///////////////////////////////////////////////
-    def update(self, entityInput: EntitysModel) -> EntitysModel:
+    def update(self, id: int, entityInput: EntitysModel) -> EntitysModel:
         entityOutput = (
-            self.session.query(EntitysModel)
-            .filter(EntitysModel.id == entityInput.id)
-            .first()
+            self.session.query(EntitysModel).filter(EntitysModel.id == id).first()
         )
 
         if not entityOutput:
@@ -84,3 +82,27 @@ class EntityRepository(RepositoryInterface[EntitysModel]):
         self.session.commit()
 
         return entityOutput
+
+    def find(
+        self,
+        data: date | None = None,
+        sistema: str | None = None,
+        unidade: str | None = None,
+    ):
+        filtros = []
+
+        if data:
+            filtros.append(EntitysModel.data == data)
+
+        if sistema:
+            filtros.append(EntitysModel.sistema == sistema)
+
+        if unidade:
+            filtros.append(EntitysModel.sistema == unidade)
+
+        stmt = select(EntitysModel)
+
+        if filtros:
+            stmt = stmt.where(*filtros)
+
+        return self.session.scalars(stmt).all()

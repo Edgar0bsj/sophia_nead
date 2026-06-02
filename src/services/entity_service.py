@@ -1,26 +1,59 @@
-from src.interface.service_interface import ServiceInterface
+from datetime import date
+
+from src.repositories.entitys_repository import EntityRepository
 from src.models.entitys_model import EntitysModel
-from src.interface.repository_interface import RepositoryInterface
+from src.dto.entityDTO import EntityInputDTO
 
-from src.decorators.entityDecorators.service.upsert_decorator import UpsertDecorator
 
-class EntityService(ServiceInterface[EntitysModel]):
-    
-    def __init__(self, entityRepository:RepositoryInterface):
+class EntityService:
+
+    def __init__(self, entityRepository: EntityRepository):
         self.repository = entityRepository
-            
-    def find_by_id(self, id:int)-> EntitysModel:
-        return (self.repository.find_by_id(id))
-    
-    def find_all(self)-> list[EntitysModel]:
-        return (self.repository.find_all())
-    
-    @UpsertDecorator
-    def save(self, entitysInput:EntitysModel)-> EntitysModel:
-        return (self.repository.save(entitysInput))
-    
-    def update(self, entitysInput:EntitysModel)-> EntitysModel:
-        return (self.repository.update(entitysInput))
-    
-    def delete(self, id:int)-> EntitysModel:
-        return (self.repository.delete(id))
+
+    def create_entity(self, entityInput: EntityInputDTO) -> bool:
+
+        parseEntity = EntitysModel(
+            sistema=entityInput.sistema,
+            unidade=entityInput.unidade,
+            entity_name=entityInput.entity.value,
+            oldExternalId=entityInput.oldExternalId,
+            newExternalId=entityInput.newExternalId,
+        )
+
+        result = self.repository.save(parseEntity)
+
+        if result is not None:
+            return True
+        else:
+            return False
+
+    def update_entity(self, id: int, entityInput: EntityInputDTO) -> bool:
+
+        parseEntity = EntitysModel(
+            sistema=entityInput.sistema,
+            unidade=entityInput.unidade,
+            entity_name=entityInput.entity.value,
+            oldExternalId=entityInput.oldExternalId,
+            newExternalId=entityInput.newExternalId,
+        )
+
+        result = self.repository.update(id, parseEntity)
+
+        if result is not None:
+            return True
+        else:
+            return False
+
+    def find_all_entity(self):
+        return self.repository.find_all()
+
+    def find_entity(self, data: date, sistema: str, unidade: str):
+        return self.repository.find(data, sistema, unidade)
+
+    def delete_entity(self, id: int) -> bool:
+        result = self.repository.delete(id)
+
+        if result:
+            return True
+        else:
+            return False
