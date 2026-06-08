@@ -1,7 +1,7 @@
 from sqlalchemy import Date, String, Integer, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from datetime import date
-from src.database.database_connection import Base
+from database.base import Base
 
 
 class CurriculoModel(Base):

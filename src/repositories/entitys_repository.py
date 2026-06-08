@@ -1,108 +1,50 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import select
-
-from src.models.entitys_model import EntitysModel
 from datetime import date
+
+from sqlalchemy import create_engine
+from src.database.base import Base
+from sqlalchemy.orm import sessionmaker
+from src.models.entitys_model import EntitysModel
 
 
 class EntityRepository:
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, url_db="sqlite:///src/database/database.db") -> None:
+        self.engine = create_engine(url_db)
 
-        self.session = session
+        Base.metadata.create_all(self.engine)
 
-    # ///////////////////////////////////////////////
-    #               find_all
-    # ///////////////////////////////////////////////
+        self.Session = sessionmaker(bind=self.engine)
+        self.session = self.Session()
+
+    def create(self, entitys_model: EntitysModel) -> EntitysModel:
+        self.session.add(entitys_model)
+        self.session.commit()
+        return entitys_model
+
     def find_all(self) -> list[EntitysModel]:
         return self.session.query(EntitysModel).all()
 
-    # ///////////////////////////////////////////////
-    #                   find_by_id
-    # ///////////////////////////////////////////////
-    def find_by_id(self, entity_id: int) -> EntitysModel:
-        return (
-            self.session.query(EntitysModel)
-            .filter(EntitysModel.id == entity_id)
-            .first()
-        )
+    def update(self, _id: int, entitys_model: EntitysModel) -> EntitysModel | None:
+        newEntity = self.session.query(EntitysModel).filter_by(id=_id).first()
 
-    # ///////////////////////////////////////////////
-    #                   create
-    # ///////////////////////////////////////////////
-    def save(self, entityInput: EntitysModel) -> EntitysModel:
-
-        entityOutput = EntitysModel(
-            sistema=entityInput.sistema,
-            unidade=entityInput.unidade,
-            entity_name=entityInput.entity_name,
-            oldExternalId=entityInput.oldExternalId,
-            newExternalId=entityInput.newExternalId,
-        )
-
-        self.session.add(entityOutput)
-        self.session.commit()
-
-        return entityOutput
-
-    # ///////////////////////////////////////////////
-    #                   update
-    # ///////////////////////////////////////////////
-    def update(self, id: int, entityInput: EntitysModel) -> EntitysModel:
-        entityOutput = (
-            self.session.query(EntitysModel).filter(EntitysModel.id == id).first()
-        )
-
-        if not entityOutput:
-            return None
-
-        entityOutput.data = date.today()
-        entityOutput.sistema = entityInput.sistema
-        entityOutput.unidade = entityInput.unidade
-        entityOutput.entity_name = entityInput.entity_name
-        entityOutput.oldExternalId = entityInput.oldExternalId
-        entityOutput.newExternalId = entityInput.newExternalId
+        newEntity.sistema = entitys_model.sistema
+        newEntity.unidade = entitys_model.unidade
+        newEntity.entity_name = entitys_model.entity_name
+        newEntity.oldExternalId = entitys_model.oldExternalId
+        newEntity.newExternalId = entitys_model.newExternalId
 
         self.session.commit()
+        return newEntity
 
-        return entityOutput
+    def delete(self, _id: int) -> EntitysModel | None:
+        findEntity = self.session.query(EntitysModel).filter_by(id=_id).first()
+        self.session.delete(findEntity)
+        self.session.commit()
+        return findEntity
 
-    # ///////////////////////////////////////////////
-    #                   delete
-    # ///////////////////////////////////////////////
-    def delete(self, id: int) -> EntitysModel:
-
-        entityOutput = (
-            self.session.query(EntitysModel).filter(EntitysModel.id == id).first()
+    def find_by_data(self, data: date) -> list[EntitysModel] | None:
+        all_entity = (
+            self.session.query(EntitysModel).filter(EntitysModel.data == data).all()
         )
 
-        if not entityOutput:
-            return False
-        self.session.delete(entityOutput)
-        self.session.commit()
-
-        return entityOutput
-
-    def find(
-        self,
-        data: date | None = None,
-        sistema: str | None = None,
-        unidade: str | None = None,
-    ):
-        filtros = []
-
-        if data:
-            filtros.append(EntitysModel.data == data)
-
-        if sistema:
-            filtros.append(EntitysModel.sistema == sistema)
-
-        if unidade:
-            filtros.append(EntitysModel.sistema == unidade)
-
-        stmt = select(EntitysModel)
-
-        if filtros:
-            stmt = stmt.where(*filtros)
-
-        return self.session.scalars(stmt).all()
+        return all_entity
