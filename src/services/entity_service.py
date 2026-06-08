@@ -47,8 +47,7 @@ class EntityService:
             entitys.append(asdict(entityOutput))
         return entitys
 
-    def exportEntityToCSV(self, all_entitys: list[EntitysModel]):
-
+    def exportEntityToCSV(self, all_entitys: list[EntitysModel]) -> None:
         entitys = [
             {
                 "id": e.id,
@@ -66,7 +65,7 @@ class EntityService:
         df = df.drop(columns=["id", "data", "sistema", "unidade"])
         df = df.rename(columns={"entity_name": "entity"})
         df.to_csv(
-            "dados.csv",
+            "output/dados.csv",
             index=False,
             sep=";",
             encoding="utf-8",

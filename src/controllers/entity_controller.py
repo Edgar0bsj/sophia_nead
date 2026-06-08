@@ -59,7 +59,6 @@ class EntityController:
                 data_filter = date.today()
 
             all_entitys = self.repository.find_by_data(data_filter)
-
             self.service.exportEntityToCSV(all_entitys)
 
         except Exception as err:
