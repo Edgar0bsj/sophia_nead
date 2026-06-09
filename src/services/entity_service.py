@@ -1,5 +1,4 @@
 from dataclasses import asdict
-from datetime import date
 from src.models.entitys_model import EntitysModel
 from src.dto.entityDTO import EntityOutputDTO
 from typing import Any

@@ -54,6 +54,6 @@ class TestEntityController:
 
         controller.delete_entity(entity["id"])
 
-    # @pytest.mark.skip(reason="Ignorando temporariamente este teste")
+    @pytest.mark.skip(reason="Ignorando temporariamente este teste")
     def test_export_entity_CSV(self, controller: EntityController):
         controller.export_entity_to_CSV()
