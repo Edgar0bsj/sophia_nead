@@ -66,7 +66,6 @@ class ModalidadeService:
 
         df = df.drop(columns=["id", "data", "sistema", "unidade"])
         df = df.rename(columns={"modalidade_nome": "name"})
-        # print("\n", df.to_markdown(index=False))
         df.to_csv(
             "output/teaching-modality.unig_producao.csv",
             index=False,

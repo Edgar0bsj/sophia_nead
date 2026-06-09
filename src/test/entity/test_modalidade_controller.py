@@ -24,7 +24,7 @@ class TestModalidadeController:
 
         print(controller.create_modalidade(modalidade_input))
 
-    @pytest.mark.skip(reason="Ignorando temporariamente este teste")
+    # @pytest.mark.skip(reason="Ignorando temporariamente este teste")
     def test_find_all_modalidade(self, controller: ModalidadeController):
         all_modalidade = controller.find_all_modalidade()
 
@@ -55,3 +55,7 @@ class TestModalidadeController:
     @pytest.mark.skip(reason="Ignorando temporariamente este teste")
     def test_export_entity_CSV(self, controller: ModalidadeController):
         controller.export_modalidade_to_CSV()
+
+    @pytest.mark.skip(reason="Ignorando temporariamente este teste")
+    def test_get_cursos_by_modalidade(self, controller: ModalidadeController):
+        controller.get_cursos_by_modalidade(1)

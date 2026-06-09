@@ -40,7 +40,7 @@ class TestEntityController:
         edit_entity = EntityInputDTO(
             ultimoRegistro["sistema"],
             ultimoRegistro["unidade"],
-            "lukão",
+            "campus",
             ultimoRegistro["oldExternalId"],
             ultimoRegistro["newExternalId"],
         )

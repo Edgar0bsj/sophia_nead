@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from src.database.base import Base
 from sqlalchemy.orm import sessionmaker
 from src.models.modalidade_model import ModalidadeModel
+from typing import Any
 
 
 class ModalidadeRepository:
@@ -52,3 +53,7 @@ class ModalidadeRepository:
         )
 
         return all_modalidade
+
+    def list_cursos(self, _id: int) -> list[Any]:
+        father = self.session.query(ModalidadeModel).filter_by(id=_id).first()
+        return father.cursos

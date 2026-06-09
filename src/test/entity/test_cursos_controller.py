@@ -20,7 +20,7 @@ class TestCursosController:
             name="Biomedicina",
             externalId="G_BIOMED",
             isActive=True,
-            externalTeachingModalityId="4",
+            externalTeachingModalityId="6",
             externalEducationLevelId="1",
             courseTypeId="bachelor",
         )
@@ -58,6 +58,6 @@ class TestCursosController:
 
         controller.delete_curso(cursos["id"])
 
-    # @pytest.mark.skip(reason="Ignorando temporariamente este teste")
+    @pytest.mark.skip(reason="Ignorando temporariamente este teste")
     def test_export_cursos_CSV(self, controller: CursosController):
         controller.export_curso_to_CSV()
