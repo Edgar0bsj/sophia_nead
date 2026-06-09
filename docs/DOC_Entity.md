@@ -233,9 +233,9 @@ None
 <details>
   <summary> Parameters </summary>
 
-| Parameter | Type   | Description |
-| :-------- | :----- | :---------- |
-| `None`    | `None` | `-`         |
+| Parameter     | Type   | Description |
+| :------------ | :----- | :---------- |
+| `data_filter` | `date` | `Opcional`  |
 
 </details>
 

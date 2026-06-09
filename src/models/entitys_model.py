@@ -17,6 +17,6 @@ class EntitysModel(Base):
 
     entity_name: Mapped[str] = mapped_column(String(100))
 
-    oldExternalId: Mapped[str] = mapped_column(String(100))
+    oldExternalId: Mapped[str] = mapped_column(String(100), unique=True)
 
     newExternalId: Mapped[str] = mapped_column(String(100))

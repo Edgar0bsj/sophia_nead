@@ -4,12 +4,10 @@ from datetime import date
 from src.database.base import Base
 
 
-class ModalidadeModel(Base):
-    __tablename__ = "modalidade"
+class NiveisDeEnsinoModel(Base):
+    __tablename__ = "niveis_de_ensino"
 
-    id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, autoincrement=True, unique=True
-    )
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
 
     data: Mapped[date] = mapped_column(Date, default=date.today)
 
@@ -17,13 +15,13 @@ class ModalidadeModel(Base):
 
     unidade: Mapped[str] = mapped_column(String(100))
 
-    modalidade_nome: Mapped[str] = mapped_column(String(100))
+    name: Mapped[str] = mapped_column(String(100))
 
     externalId: Mapped[str] = mapped_column(String(100), unique=True)
 
-    teachingModalityTypeId: Mapped[str] = mapped_column(String(100))
+    educationLevelTypeId: Mapped[str] = mapped_column(String(100))
 
-    # Relacionando
+    # Relacionamento
     cursos: Mapped[list["CursosModel"]] = relationship(  # type: ignore
-        back_populates="modalidade", passive_deletes=True
+        back_populates="nivel_de_ensino", passive_deletes=True
     )

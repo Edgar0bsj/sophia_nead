@@ -64,7 +64,7 @@ class EntityService:
         df = df.drop(columns=["id", "data", "sistema", "unidade"])
         df = df.rename(columns={"entity_name": "entity"})
         df.to_csv(
-            "output/dados.csv",
+            "output/external-id-management.unig_producao.csv",
             index=False,
             sep=";",
             encoding="utf-8",
