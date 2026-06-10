@@ -46,14 +46,14 @@ class TestModalidadeController:
         print(controller.update_modalidade(id, edit_modali))
 
     @pytest.mark.skip(reason="Ignorando temporariamente este teste")
-    def test_delete_entity(self, controller: ModalidadeController):
+    def test_delete_modalidade(self, controller: ModalidadeController):
 
         modalidade = controller.find_all_modalidade()[-1]
 
         controller.delete_modalidade(modalidade["id"])
 
     @pytest.mark.skip(reason="Ignorando temporariamente este teste")
-    def test_export_entity_CSV(self, controller: ModalidadeController):
+    def test_export_modalidade_CSV(self, controller: ModalidadeController):
         controller.export_modalidade_to_CSV()
 
     @pytest.mark.skip(reason="Ignorando temporariamente este teste")

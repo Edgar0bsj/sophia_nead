@@ -15,7 +15,7 @@ def controller():
 class TestCurriculoController:
 
     @pytest.mark.skip(reason="Ignorando temporariamente este teste")
-    def test_curriculo_entity(self, controller: CurriculoController):
+    def test_create_curriculo(self, controller: CurriculoController):
         curriculo_input = CurriculoInputDTO(
             sistema="SOPHIA",
             unidade="NOVA IGUAÇU",
@@ -63,5 +63,5 @@ class TestCurriculoController:
         controller.delete_curriculo(curriculo["id"])
 
     @pytest.mark.skip(reason="Ignorando temporariamente este teste")
-    def test_export_entity_CSV(self, controller: CurriculoController):
+    def test_export_curriculo_CSV(self, controller: CurriculoController):
         controller.export_curriculo_to_CSV()

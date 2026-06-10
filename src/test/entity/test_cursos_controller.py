@@ -34,7 +34,7 @@ class TestCursosController:
         print(all_curso)
 
     @pytest.mark.skip(reason="Ignorando temporariamente este teste")
-    def test_update_entity(self, controller: CursosController):
+    def test_update_curso(self, controller: CursosController):
         ultimoRegistro = controller.find_all_curso()
         ultimoRegistro = ultimoRegistro[-1]
         id = ultimoRegistro["id"]
