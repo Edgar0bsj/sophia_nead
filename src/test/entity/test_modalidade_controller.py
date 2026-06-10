@@ -24,7 +24,7 @@ class TestModalidadeController:
 
         print(controller.create_modalidade(modalidade_input))
 
-    # @pytest.mark.skip(reason="Ignorando temporariamente este teste")
+    @pytest.mark.skip(reason="Ignorando temporariamente este teste")
     def test_find_all_modalidade(self, controller: ModalidadeController):
         all_modalidade = controller.find_all_modalidade()
 

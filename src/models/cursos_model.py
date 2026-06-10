@@ -36,3 +36,8 @@ class CursosModel(Base):
     nivel_de_ensino: Mapped["NiveisDeEnsinoModel"] = relationship(  # type: ignore
         back_populates="cursos", passive_deletes=True
     )
+
+    # filho
+    curriculos: Mapped[list["CurriculoModel"]] = relationship(  # type: ignore
+        back_populates="curso", passive_deletes=True
+    )

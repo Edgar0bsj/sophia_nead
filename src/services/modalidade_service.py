@@ -72,3 +72,21 @@ class ModalidadeService:
             sep=";",
             encoding="utf-8",
         )
+
+    def parse_dict_cursos(self, cursos: list):
+        cursos_dict = [
+            {
+                "id": x.id,
+                "data": x.data,
+                "sistema": x.sistema,
+                "unidade": x.unidade,
+                "name": x.name,
+                "externalId": x.externalId,
+                "isActive": x.isActive,
+                "externalTeachingModalityId": x.externalTeachingModalityId,
+                "externalEducationLevelId": x.externalEducationLevelId,
+                "courseTypeId": x.courseTypeId,
+            }
+            for x in cursos
+        ]
+        return cursos_dict

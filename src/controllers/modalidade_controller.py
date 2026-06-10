@@ -66,20 +66,12 @@ class ModalidadeController:
             raise
 
     def get_cursos_by_modalidade(self, id: int):
-        cursos = self.repository.list_cursos(id)
-        cursos_dict = [
-            {
-                "id": x.id,
-                "data": x.data,
-                "sistema": x.sistema,
-                "unidade": x.unidade,
-                "name": x.name,
-                "externalId": x.externalId,
-                "isActive": x.isActive,
-                "externalTeachingModalityId": x.externalTeachingModalityId,
-                "externalEducationLevelId": x.externalEducationLevelId,
-                "courseTypeId": x.courseTypeId,
-            }
-            for x in cursos
-        ]
-        print(cursos_dict)
+        try:
+            cursos = self.repository.list_cursos(id)
+            cursos_dict = self.service.parse_dict_cursos(cursos)
+
+            return cursos_dict
+
+        except Exception as err:
+            print(err)
+            raise
