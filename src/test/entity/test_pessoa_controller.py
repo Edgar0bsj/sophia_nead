@@ -34,7 +34,7 @@ class TestPessoaController:
             address_complement=None,
             user_email="drikasgarces@gmail.com",
             user_username="721014656",
-            user_password="78679285Gui@",
+            user_password="paisandu",
             tags=["UNIG", "2 Entrada"],
         )
 
